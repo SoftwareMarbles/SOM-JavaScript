@@ -32,13 +32,17 @@ describe('Iterating asynchronously over collection', function() {
     it('invokes the iterator function once for empty collections', function(done) {
         var numberOfIterations = 0;
 
-        som.iterate([], function(next, obj, isFinished) {
-            ++numberOfIterations;
-            expect(obj).to.be.undefined;
-            expect(isFinished).to.be.true;
-            next();
+        som.iterate([], function(iteration) {
+            expect(iteration).to.not.be.undefined;
+            expect(iteration.next).to.not.be.undefined;
+            expect(iteration.item).to.be.null;
+            expect(iteration.index).to.be.equal(0);
+            expect(iteration.hasFinished).to.be.true;
 
-            if(isFinished) {
+            ++numberOfIterations;
+            iteration.next();
+
+            if(iteration.hasFinished) {
                 expect(numberOfIterations).to.be.equal(1);
                 done();
             }
@@ -48,11 +52,14 @@ describe('Iterating asynchronously over collection', function() {
     it('invokes the iterator function length + 1 times for collections', function(done) {
         var numberOfIterations = 0;
 
-        som.iterate([1, 2, 3], function(next, obj, isFinished) {
-            ++numberOfIterations;
-            next();
+        som.iterate([1, 2, 3], function(iteration) {
+            expect(iteration).to.not.be.undefined;
+            expect(iteration.next).to.not.be.undefined;
 
-            if(isFinished) {
+            ++numberOfIterations;
+            iteration.next();
+
+            if(iteration.hasFinished) {
                 expect(numberOfIterations).to.be.equal(4);
                 done();
             }
@@ -62,9 +69,12 @@ describe('Iterating asynchronously over collection', function() {
     it('really works asynchronously', function(done) {
         var numberOfIterations = 0;
 
-        som.iterate([1, 2, 3], function(next, obj, isFinished) {
+        som.iterate([1, 2, 3], function(iteration) {
+            expect(iteration).to.not.be.undefined;
+            expect(iteration.next).to.not.be.undefined;
+
             ++numberOfIterations;
-            next();
+            iteration.next();
         });
 
         //  By designe the above code must not execute at all until we reach this point.
@@ -76,23 +86,27 @@ describe('Iterating asynchronously over collection', function() {
 
 describe('Iterating synchronously over collection', function() {
     it('doesn\'t do anything if collection is undefined', function(done) {
-        som.iterate();
+        som.iterateSync();
         done();
     });
 
     it('doesn\'t do anything if iterator is undefined', function(done) {
-        som.iterate([]);
+        som.iterateSync([]);
         done();
     });
 
     it('invokes the iterator function once synchronously for empty collections', function(done) {
         var numberOfIterations = 0;
 
-        som.iterateSync([], function(next, obj, isFinished) {
+        som.iterateSync([], function(iteration) {
+            expect(iteration).to.not.be.undefined;
+            expect(iteration.next).to.not.be.undefined;
+            expect(iteration.item).to.be.null;
+            expect(iteration.index).to.be.equal(0);
+            expect(iteration.hasFinished).to.be.true;
+
             ++numberOfIterations;
-            expect(obj).to.be.undefined;
-            expect(isFinished).to.be.true;
-            next();
+            iteration.next();
         });
 
         //  By designe the above code must be executed completely until we reach this point.
@@ -103,9 +117,12 @@ describe('Iterating synchronously over collection', function() {
     it('invokes the iterator function length + 1 times synchronously for collections', function(done) {
         var numberOfIterations = 0;
 
-        som.iterateSync([1, 2, 3], function(next, obj, isFinished) {
+        som.iterateSync([1, 2, 3], function(iteration) {
+            expect(iteration).to.not.be.undefined;
+            expect(iteration.next).to.not.be.undefined;
+
             ++numberOfIterations;
-            next();
+            iteration.next();
         });
 
         //  By designe the above code must be executed completely until we reach this point.
