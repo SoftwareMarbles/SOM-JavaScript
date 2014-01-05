@@ -32,12 +32,13 @@ describe('Iterating asynchronously over collection', function() {
     it('invokes the iterator function once for empty collections', function(done) {
         var numberOfIterations = 0;
 
-        som.iterate([], function(next, obj) {
+        som.iterate([], function(next, obj, isLast) {
             ++numberOfIterations;
             expect(obj).to.be.undefined;
+            expect(isLast).to.be.true;
             next();
 
-            if(_.isUndefined(obj)) {
+            if(isLast) {
                 expect(numberOfIterations).to.be.equal(1);
                 done();
             }
@@ -47,11 +48,11 @@ describe('Iterating asynchronously over collection', function() {
     it('invokes the iterator function length + 1 times for collections', function(done) {
         var numberOfIterations = 0;
 
-        som.iterate([1, 2, 3], function(next, obj) {
+        som.iterate([1, 2, 3], function(next, obj, isLast) {
             ++numberOfIterations;
             next();
 
-            if(_.isUndefined(obj)) {
+            if(isLast) {
                 expect(numberOfIterations).to.be.equal(4);
                 done();
             }
@@ -61,7 +62,7 @@ describe('Iterating asynchronously over collection', function() {
     it('really works asynchronously', function(done) {
         var numberOfIterations = 0;
 
-        som.iterate([1, 2, 3], function(next, obj) {
+        som.iterate([1, 2, 3], function(next, obj, isLast) {
             ++numberOfIterations;
             next();
         });
@@ -87,9 +88,10 @@ describe('Iterating synchronously over collection', function() {
     it('invokes the iterator function once synchronously for empty collections', function(done) {
         var numberOfIterations = 0;
 
-        som.iterateSync([], function(next, obj) {
+        som.iterateSync([], function(next, obj, isLast) {
             ++numberOfIterations;
             expect(obj).to.be.undefined;
+            expect(isLast).to.be.true;
             next();
         });
 
@@ -101,7 +103,7 @@ describe('Iterating synchronously over collection', function() {
     it('invokes the iterator function length + 1 times synchronously for collections', function(done) {
         var numberOfIterations = 0;
 
-        som.iterateSync([1, 2, 3], function(next, obj) {
+        som.iterateSync([1, 2, 3], function(next, obj, isLast) {
             ++numberOfIterations;
             next();
         });
