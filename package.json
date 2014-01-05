@@ -1,0 +1,30 @@
+{
+  "name": "som-js",
+  "version": "0.0.1",
+  "description": "",
+  "main": "lib/som",
+  "engine": [
+    "node >= 0.2.0"
+  ],
+  "author": {
+    "name": "Ivan Erceg",
+    "email": "ivan@softwaremarbles.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SoftwareMarbles/SOM-JavaScript"
+  },
+  "license": "Apache 2.0",
+  "readme": "npm install som-js",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/SoftwareMarbles/SOM-JavaScript/issues"
+  },
+  "homepage": "https://github.com/SoftwareMarbles/SOM-JavaScript",
+  "_id": "som-js@0.0.1",
+  "dependencies": {
+    "underscore": "1.5.*",
+    "chai": "*",
+    "mocha": "*"
+  }
+}
